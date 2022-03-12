@@ -1,5 +1,5 @@
 //importer de model sauce crée , pouvoir utiliser notre nouveau modèle Mongoose dans l'application, nous devons l'importer dans le fichier
-const Sauce = require('../models/sauce');
+const Sauce = require('../models/Sauce');
 
 //---------controller------------- (contenue des routes)
 
