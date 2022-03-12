@@ -1,7 +1,7 @@
 const express =  require('express'); //aplication express require pour importer package express
 const mongoose = require('mongoose'); // importez mongoose dans votre fichier 
 const saucesRoutes = require('./routes/sauce');//enregistrer notre nouveau routeur dans notre fichier app.js
-
+const userRoutes = require('./routes/user');
 // appelle de la methode express (une function) permet de crée une application expresse
 const app = express();
 
@@ -34,8 +34,8 @@ app.use((req, res, next) => {
 app.use(express.json());// intercepte toute les requetes qui on un content type json (format) et mais a disposition dans le  cors sur objet req  (body)
 
 
-// enregistrer notre routeur pour toutes les demandes effectuées vers /api/stuff
+// enregistrer notre routeur pour toutes les demandes effectuées vers /api/sauces
 app.use('/api/sauces', saucesRoutes);
-
+app.use('/api/auth', userRoutes); //route atendu par le front end
 // exporter cette application pour y avoir acces depuis les autre fichier de notre projet notament le server node
 module.exports = app;
