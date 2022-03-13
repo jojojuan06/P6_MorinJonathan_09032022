@@ -1,6 +1,8 @@
 // **** aplication express require pour importer package express ********
 const express = require('express');
 const sauceControllers = require('../controllers/sauces'); // importation du controller sauce
+const multer = require('../middleware/multer-config');//importe multer , gérer les fichiers entrants dans les requêtes HTTP
+//-----------
 
 // Creation d'un routeur
 const router = express.Router(); // avec la methode routeur d'expresse (ex remplace app.get par router.get )
@@ -11,7 +13,7 @@ const auth = require('../middleware/auth');
 //---------  Routes  -----------
 
 //POST (envoie la requete)
-router.post('/', auth, sauceControllers.createSauce ); // recuperation de l'url du post et du contenue post (createSauce(objet body))
+router.post('/', auth, multer, sauceControllers.createSauce ); // recuperation de l'url du post et du contenue post (createSauce(objet body))
 //Update (mettre a jour)
 router.put('/:id', auth, sauceControllers.modifySauce); // "/"(adresse) + id  en paramettre de route , chemin du contenue la route
 //Delete (supprimer l'objet)
