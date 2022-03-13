@@ -13,6 +13,8 @@ module.exports = (req, res, next) => {
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET'); // function pour verifier le token et le token deja crée
     //il fois decoder il devient un objet classique pour le recuperer
     const userId = decodedToken.userId; // recuperer le userid qui est a l'interieure
+    //attribuer userid a la requete , objet auth a la req
+    req.auth = { userId } ; //racourcie pour attribuer un valeur a une clée du mm nom d'un objet,extensible , ajouter des element a l'avenir
     // verifier que la requete correspond a celle du token
     // si userid dans le corp de la req et que celuici et different de userId
     if (req.body.userId && req.body.userId !== userId)  {
