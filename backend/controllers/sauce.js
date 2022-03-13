@@ -4,16 +4,19 @@ const Sauce = require('../models/Sauce');
 //---------controller------------- (contenue des routes)
 
 // POST-----
-exports.createsauce = (req, res, next) => { //exporter une function createsauce / contenue de la route post / creation dun post
+exports.createSauce = (req, res, next) => {//exporter une function createSauce / contenue de la route post / creation dun post
+    const sauceObject = JSON.parse(req.body.sauce);//extraire l'objet json
     //body correspond au model de l'objet que l'on envoi
-    delete req.body._id; // enlever le champ id (envoyé par le front-end) du corp de la requete (methode delete) car mongoos le genere automatiquement
-    const sauce = new Sauce({ /* creation d'une nouvelle instance  de mon objet sauce (class) de le req*/  
-        ...req.body // operateur spread (...) vas copier les champ de l'objet , dans le corp de la request body
+    delete sauceObject._id;// enlever le champ id (envoyé par le front-end) du corp de la requete (methode delete) car mongoos le genere automatiquement
+    const sauce = new Sauce({/* creation d'une nouvelle instance  de mon objet sauce (class) de le req*/  
+    ...sauceObject,// operateur spread (...) vas copier les champ de l'objet , dans le corp de la request 
+    //http ou https puis le host de notre server (localhost:3000), la racine du serveur
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`//adresse de l'image en interpolation 
     });
-    sauce.save() //methode save enregistre l'objet dans la base de donnée renvoi une promise
-        .then(() => res.status(201).json({ message: 'Objet enregistré !'}))//retourne une promise asynchrone qui attend ,201 la requête a réussi avec le message
-        .catch(error => res.status(400).json({ error })); // capture l'erreur et renvoi un message erreur (egale error: error)
-}
+    sauce.save()//methode save enregistre l'objet dans la base de donnée renvoi une promise
+    .then(() => res.status(201).json({ message: 'Objet enregistré !'}))//retourne une promise asynchrone qui attend ,201 la requête a réussi avec le message
+    .catch(error => res.status(400).json({ error }));// capture l'erreur et renvoi un message erreur (egale error: error)
+};
 //---------
 
 // PUT (modifier / mise a jour de l'objet) -----
@@ -48,7 +51,7 @@ exports.deleteSauce = (req, res, next) => {
                 });   
             }
             //recuperer l'id des paramettre de route ,si oui on effectue la suppression
-            Sauce.deleteOne({_id: req.params.id }) // egale (clée -> valeur) function pour supprimer un things (produit) dans la base de donnée    
+            Sauce.deleteOne({_id: req.params.id }) // egale (clée -> valeur) function pour supprimer un sauces (produit) dans la base de donnée    
             .then(() => res.status(200).json({message: 'Objet supprimer !'})) // retourne la response 200 pour ok pour la methode http , renvoi objet modifier
             .catch(error => res.status(400).json({ error })); // capture l'erreur et renvoi un message erreur (egale error: error)    
         }
