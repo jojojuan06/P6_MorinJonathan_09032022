@@ -30,12 +30,30 @@ exports.modifySauce = (req, res, next) => { //exporter une function createSauce 
 
 // DELETE (supprimer / suppression de l'objet) -----
 
-exports.deleteSauce = (req, res, next) => {  
-    //recuperer l'id des paramettre de route
-    Sauce.deleteOne({_id: req.params.id }) // egale (clée -> valeur) function pour supprimer un sauces (produit) dans la base de donnée    
-    .then(() => res.status(200).json({message: 'Objet supprimer !'})) // retourne la response 200 pour ok pour la methode http , renvoi objet modifier
-    .catch(error => res.status(400).json({ error })); // capture l'erreur et renvoi un message erreur (egale error: error)
-}
+exports.deleteSauce = (req, res, next) => { 
+    // recupere le sauce dans la base
+    Sauce.findOne({ _id:req.params.id })
+    .then(
+        //on verifier q'uil appartient bien  a la personne qui effectuer la req
+        (sauce) => {
+            if (!sauce) {
+                return res.status(404).json({
+                    error: new Error('Objet non trouvé')
+                });
+            }
+            // verifier que seulement la personne qui detient l'objet peu le supprimer
+            if (sauce.userId !== req.auth.userId) { //different de req.auth
+                return res.status(401).json({ //probleme authentification
+                    error: new Error('Requete non autorisé !')
+                });   
+            }
+            //recuperer l'id des paramettre de route ,si oui on effectue la suppression
+            Sauce.deleteOne({_id: req.params.id }) // egale (clée -> valeur) function pour supprimer un things (produit) dans la base de donnée    
+            .then(() => res.status(200).json({message: 'Objet supprimer !'})) // retourne la response 200 pour ok pour la methode http , renvoi objet modifier
+            .catch(error => res.status(400).json({ error })); // capture l'erreur et renvoi un message erreur (egale error: error)    
+        }
+    );
+};
 
 //---------------
 
