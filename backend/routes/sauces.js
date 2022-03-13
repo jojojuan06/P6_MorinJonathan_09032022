@@ -15,7 +15,7 @@ const auth = require('../middleware/auth');
 //POST (envoie la requete)
 router.post('/', auth, multer, sauceControllers.createSauce ); // recuperation de l'url du post et du contenue post (createSauce(objet body))
 //Update (mettre a jour)
-router.put('/:id', auth, sauceControllers.modifySauce); // "/"(adresse) + id  en paramettre de route , chemin du contenue la route
+router.put('/:id', auth, multer, sauceControllers.modifySauce); // "/"(adresse) + id  en paramettre de route , chemin du contenue la route
 //Delete (supprimer l'objet)
 router.delete('/:id', auth, sauceControllers.deleteSauce); // reagie a la requete delete id en paramettre de route , applique la function a la route
 //Get (recupere un / plusieurs objet(s)) , chercher l'identifiant dans la route , " : " dit a express cette partie de route est dynamique recuprer l'id, avec l'id (identifiant vas envoyer l'id de l'objet)

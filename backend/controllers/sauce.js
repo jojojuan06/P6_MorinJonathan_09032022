@@ -5,6 +5,7 @@ const Sauce = require('../models/Sauce');
 
 // POST-----
 exports.createSauce = (req, res, next) => {//exporter une function createSauce / contenue de la route post / creation dun post
+    //Le corps de la requête contient une chaîne donc on doit le parse
     const sauceObject = JSON.parse(req.body.sauce);//extraire l'objet json
     //body correspond au model de l'objet que l'on envoi
     delete sauceObject._id;// enlever le champ id (envoyé par le front-end) du corp de la requete (methode delete) car mongoos le genere automatiquement
@@ -21,13 +22,20 @@ exports.createSauce = (req, res, next) => {//exporter une function createSauce /
 
 // PUT (modifier / mise a jour de l'objet) -----
 
-exports.modifySauce = (req, res, next) => { //exporter une function createSauce / contenue de la route post / creation dun post  
-    Sauce.updateOne({_id: req.params.id }, // egale (clée -> valeur) function pour modifier un sauces (produit) dans la base de donnée
-    {...req.body,  //  spread pour recuperer le sauce (produit) qui est dans le corp de la requete (objet body)
-    _id: req.params.id }) // et dire que l'id corespond a celui dees paramettre
-    .then(() => res.status(200).json({message: 'Objet modifié !'})) // retourne la response 200 pour ok pour la methode http , renvoi objet modifier
-    .catch(error => res.status(400).json({ error })); // capture l'erreur et renvoi un message erreur (egale error: error)
-}
+exports.modifySauce = (req, res, next) => {//exporter une function createsauce / contenue de la route post / creation dun post
+    //test le cas de figure ou on se trouve
+    const sauceObject = req.file ?//si req.file exist (ternaire)
+        {
+        ...JSON.parse(req.body.sauce),//si il exist il faut le prendre en compte  l'ojet du produit
+        //on genere une nouvelle image url
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`//adresse de l'image en interpolation 
+        } : { ...req.body };//sinon il n'exite pas on copie l'objet (corp de la requete)
+    Sauce.updateOne({ _id: req.params.id }, // egale (clée -> valeur) function pour modifier un sauces (produit) dans la base de donnée
+        { ...sauceObject, _id: req.params.id })//pour correspondre a l'id des param de la req et dire que l'id corespond a celui des paramettre
+    //spread pour recuperer le sauce (produit) qui est dans le corp de la requete que l'on a cree et on modifier sont identifiant
+        .then(() => res.status(200).json({ message: 'Objet modifié !'}))// retourne la response 200 pour ok pour la methode http , renvoi objet modifier
+        .catch(error => res.status(400).json({ error }));// capture l'erreur et renvoi un message erreur (egale error: error)
+};
 
 //---------------
 
