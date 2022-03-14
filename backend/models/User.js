@@ -13,7 +13,7 @@ exports.signup = (req, res, next) => { //function pour crypter un mot de pass , 
         //creation du new utilisateur
         const user = new User({ //creation un nouvelle utilisateur (user) avec monggose
         email: req.body.email, // email passez l'addresse passsez dans le corp de la requete
-        password :hash // enregistrer le mdp crypter (hash) pour ne pas stocker un mdp en blanc
+        password: hash // enregistrer le mdp crypter (hash) pour ne pas stocker un mdp en blanc
         });
     user.save() //enregistre dans la BDD    
     .then(() => res.status(201).json({message: 'utilisateur créé !'})) //creation de ressource

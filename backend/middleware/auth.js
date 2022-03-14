@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken'); //crée des token et les verifier
 
 //exportation d'un middleware
 module.exports = (req, res, next) => {
-    //permet de capturer plusieur erreur 
+    //permet de capturer plusieur erreur (verifie)
     try {
     //split divise une chaîne de caractères en une liste ordonnée de sous-chaînes, place ces sous-chaînes dans un tableau et retourne le tableau.
     const token = req.headers.authorization.split(' ')[1];  //retourner un tableau bearer  1 element , token 2 element (que l'on recupere)
