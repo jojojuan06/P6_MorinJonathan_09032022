@@ -2,11 +2,13 @@
 const express =  require('express'); //aplication express require pour importer package express
 const mongoose = require('mongoose'); // importez mongoose dans votre fichier 
 const path = require('path'); // donne acces au chemin de notre gestion de fichier (systeme de fichier)
-//------------------
+//------
 
-//enregistrer notre nouveau routeur dans notre fichier app.js--------
-const saucesRoutes = require('./routes/sauce');
+// enregistrer notre nouveau routeur dans notre fichier app.js--------
+const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
+//-----------------
+
 // appelle de la methode express (une function) permet de crée une application expresse
 const app = express();
 
@@ -38,9 +40,8 @@ app.use((req, res, next) => {
 //acces au corp de la requete (body)
 app.use(express.json());// intercepte toute les requetes qui on un content type json (format) et mais a disposition dans le  cors sur objet req  (body)
 
-
 // enregistrer notre routeur pour toutes les demandes effectuées vers /api/sauces
-app.use('/api/sauces', saucesRoutes);
+app.use('/api/sauces', sauceRoutes);
 // dire a expresse de servir ce dossier images
 // servir un dossier static avec cette methode , (ajouter .join) nom du dossier ou on se trouve et ajouter images
 app.use('/images', express.static(path.join(__dirname, 'images')));
