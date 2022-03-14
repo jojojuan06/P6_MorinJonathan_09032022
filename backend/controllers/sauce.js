@@ -1,6 +1,9 @@
 //importer de model sauce crée , pouvoir utiliser notre nouveau modèle Mongoose dans l'application, nous devons l'importer dans le fichier
 const Sauce = require('../models/Sauce');
 
+//importer acces au systeme de fichier crer (file systeme)
+const fs = require('fs');
+
 //---------controller------------- (contenue des routes)
 
 // POST-----
@@ -41,29 +44,39 @@ exports.modifySauce = (req, res, next) => {//exporter une function createsauce /
 
 // DELETE (supprimer / suppression de l'objet) -----
 
-exports.deleteSauce = (req, res, next) => { 
-    // recupere le sauce dans la base
-    Sauce.findOne({ _id:req.params.id })
-    .then(
-        //on verifier q'uil appartient bien  a la personne qui effectuer la req
-        (sauce) => {
-            if (!sauce) {
-                return res.status(404).json({
-                    error: new Error('Objet non trouvé')
-                });
-            }
-            // verifier que seulement la personne qui detient l'objet peu le supprimer
-            if (sauce.userId !== req.auth.userId) { //different de req.auth
-                return res.status(401).json({ //probleme authentification
-                    error: new Error('Requete non autorisé !')
-                });   
-            }
-            //recuperer l'id des paramettre de route ,si oui on effectue la suppression
-            Sauce.deleteOne({_id: req.params.id }) // egale (clée -> valeur) function pour supprimer un sauces (produit) dans la base de donnée    
-            .then(() => res.status(200).json({message: 'Objet supprimer !'})) // retourne la response 200 pour ok pour la methode http , renvoi objet modifier
-            .catch(error => res.status(400).json({ error })); // capture l'erreur et renvoi un message erreur (egale error: error)    
+exports.deleteSauce = (req, res, next) => {
+    // allez le chercher et avoir l'url de l'image pour la supprimer (cherche le produit)
+    Sauce.findOne({ _id: req.params.id })
+        .then(sauce => {  //recuperer un sauce (produit) dans le callback (function de rapelle)
+        //split retourne un tableaux de que qu'il y a avant  /image , apres /image
+        const filename = sauce.imageUrl.split('/images/')[1];//extraire le fichier , recup l'image url du produit retourner par la base,le2eme pour avoir le nom du fichier
+        // package fs , unlike pour supprimer un fichier (1 arg(chemin fichier , 2 arg(callback apres supprimer)))
+        fs.unlink(`images/${filename}`, () => { //filename fait reference au dossier image
+        //recuperer l'id des paramettre de route ,si oui on effectue la suppression
+        Sauce.deleteOne({_id: req.params.id }) // egale (clée -> valeur) function pour supprimer un sauces (produit) dans la base de donnée    
+        .then(() => res.status(200).json({message: 'Objet supprimer !'})) // retourne la response 200 pour ok pour la methode http , renvoi objet modifier
+        .catch(error => res.status(400).json({ error })); // capture l'erreur et renvoi un message erreur (egale error: error)   
+    }); 
+})
+.catch(error => res.status(500).json({ error })); //erreur serveur
+// recupere le sauce dans la base
+Sauce.findOne({ _id:req.params.id }) //trouver id a celui qui est dans les parametres de la req
+.then(
+    //on verifier q'uil appartient bien  a la personne qui effectuer la req
+    (sauce) => {
+        if (!sauce) {
+            return res.status(404).json({
+                error: new Error('Objet non trouvé')
+            });
         }
-    );
+        // verifier que seulement la personne qui detient l'objet peu le supprimer
+        if (sauce.userId !== req.auth.userId) { //different de req.auth
+            return res.status(401).json({ //probleme authentification
+                error: new Error('Requete non autorisé !')
+            });   
+        }
+    }
+);
 };
 
 //---------------
