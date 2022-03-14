@@ -1,19 +1,19 @@
-// **** aplication express require pour importer package express ********
-const express = require('express');
-const sauceControllers = require('../controllers/sauces'); // importation du controller sauce
+//--- aplication require importer--------
+const express = require('express');//importer package express
+const sauceControllers = require('../controllers/sauce'); // importation du controller sauce
+const auth = require('../middleware/auth');//importe midleware d'authentification (,auth pour l'apliquer) pour chaque route que l'on veut proteger
 const multer = require('../middleware/multer-config');//importe multer , gérer les fichiers entrants dans les requêtes HTTP
-//-----------
+//----
+
 
 // Creation d'un routeur
 const router = express.Router(); // avec la methode routeur d'expresse (ex remplace app.get par router.get )
 
-//importation du midleware d'authentification (,auth pour l'apliquer) pour chaque route que l'on veut proteger
-const auth = require('../middleware/auth');
 
 //---------  Routes  -----------
 
-//POST (envoie la requete)
-router.post('/', auth, multer, sauceControllers.createSauce ); // recuperation de l'url du post et du contenue post (createSauce(objet body))
+//POST (envoie la requete , ajout de auth(1) et multer(2))
+router.post('/', auth, multer, sauceControllers.createSauce); // recuperation de l'url du post et du contenue post (createSauce(objet body))
 //Update (mettre a jour)
 router.put('/:id', auth, multer, sauceControllers.modifySauce); // "/"(adresse) + id  en paramettre de route , chemin du contenue la route
 //Delete (supprimer l'objet)
