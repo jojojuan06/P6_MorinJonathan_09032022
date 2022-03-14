@@ -4,6 +4,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt'); //importer package de cryptage
 const jwt = require('jsonwebtoken'); //crée des token et les verifier
+require('dotenv').config({ path:'../.env' });// proteger les donnée , adresse (path: chemin) du .env pour le process
 
 //function enregistrement de nouveaux utilisateur (Middleware d'authentification)
 
@@ -46,7 +47,7 @@ exports.login = (req, res, next) => {
             token: jwt.sign( //token crypter pour permettre la connection de l'utilisateur
             // cree un userid qui sera l'identifiant utilisateur du user
             { userId : user._id },// payload les donnée que le veut encoder a l'interieure de ce token (cree un objet)
-            'RANDOM_TOKEN_SECRET',  // deuxieme argument clée secrete de l'encodage
+            process.env.SECRET_KEY,  // deuxieme argument clée secrete de l'encodage du .env qui est masqué
             { expiresIn: '24h'} //troisieme argument (de config) apliquer une expiration du token de 24h
             ) 
         }); //connection valider

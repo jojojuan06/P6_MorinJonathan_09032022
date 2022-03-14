@@ -2,6 +2,7 @@
 const express =  require('express'); //aplication express require pour importer package express
 const mongoose = require('mongoose'); // importez mongoose dans votre fichier 
 const path = require('path'); // donne acces au chemin de notre gestion de fichier (systeme de fichier)
+require('dotenv').config();// proteger les donnée 
 //------
 
 // enregistrer notre nouveau routeur dans notre fichier app.js--------
@@ -13,7 +14,7 @@ const userRoutes = require('./routes/user');
 const app = express();
 
 // -----------conection a la base de donnée mongoose -----------
-mongoose.connect('mongodb+srv://jojo:3f0kukHOv1LGYea5@cluster0.wi3rn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+mongoose.connect(`${process.env.DB_LOGIN_ACCOUNT}`, // DB_LOGIN_ACCOUNT identifiant utilisateur login du .env
 {     
     useNewUrlParser: true,
     useUnifiedTopology: true 

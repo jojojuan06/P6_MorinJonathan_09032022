@@ -2,6 +2,7 @@
 
 // package verification require
 const jwt = require('jsonwebtoken'); //crée des token et les verifier
+require('dotenv').config({ path:'../.env' }); // proteger les donnée , adresse (path: chemin) du .env pour le process
 
 //exportation d'un middleware
 module.exports = (req, res, next) => {
@@ -10,7 +11,7 @@ module.exports = (req, res, next) => {
     //split divise une chaîne de caractères en une liste ordonnée de sous-chaînes, place ces sous-chaînes dans un tableau et retourne le tableau.
     const token = req.headers.authorization.split(' ')[1];  //retourner un tableau bearer  1 element , token 2 element (que l'on recupere)
     //decoder le token
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET'); // function pour verifier le token et le token deja crée
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY ); // function pour verifier le token et le token deja crée dans le  .env
     //il fois decoder il devient un objet classique pour le recuperer
     const userId = decodedToken.userId; // recuperer le userid qui est a l'interieure
     //attribuer userid a la requete , objet auth a la req
