@@ -12,8 +12,8 @@ mainPepper : { type: String, required: true },
 imageUrl : { type: String, required: true },
 heat : { type: Number, required: true },
 // pas obliger de like ou dislike
-likes : { type: Number },
-dislikes : { type: Number },
+likes : { type: Number }, 
+dislikes : { type: Number }, // , default 0
 usersLiked : { type: Array }, 
 usersDisliked : { type: Array}, 
 //-------

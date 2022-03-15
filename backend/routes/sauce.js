@@ -14,6 +14,7 @@ const router = express.Router(); // avec la methode routeur d'expresse (ex rempl
 
 //POST (envoie la requete , ajout de auth(1) et multer(2))
 router.post('/', auth, multer, sauceControllers.createSauce); // recuperation de l'url du post et du contenue post (createSauce(objet body))
+router.post('/:id/like', auth, sauceControllers.likeSauce);
 //Update (mettre a jour)
 router.put('/:id', auth, multer, sauceControllers.modifySauce); // "/"(adresse) + id  en paramettre de route , chemin du contenue la route
 //Delete (supprimer l'objet)
