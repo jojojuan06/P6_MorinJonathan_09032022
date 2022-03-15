@@ -7,7 +7,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 //importer notre schema et utilisation de la function de mongoose
 const userSchema = mongoose.Schema({
-    mail: {type : String, require: true , unique: true }, // unique true pour eviter de s'inscrire plusieur fois
+    email: {type : String, require: true , unique: true }, // unique true pour eviter de s'inscrire plusieur fois
     password: { type: String, required: true }
 }); //require true champ requis
 
