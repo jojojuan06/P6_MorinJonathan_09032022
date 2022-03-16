@@ -118,12 +118,22 @@ exports.likeSauce = (req, res, next) => {
             // Différents cas:
             switch (like) {
                 case 1:  // CAS: sauce liked
+                if (newValues.usersLiked.includes(req.auth.userId) ) { //si userlikes inclus user id descrypter avec le token alors on eux peu pas fait d'action (et pas deja like)
+                    return res.status(403).json({ message: 'Requete non autorisé !'}) //indique qu'un serveur comprend la requête mais refuse de l'autoriser.
+                }
                     newValues.usersLiked.push(userId);  //dans le cas ajouter un like
                     break;
                 case -1:  // CAS: sauce disliked
+                if (newValues.usersDisliked.includes(req.auth.userId) ) { // si userdislike  inclue userid authentifier
+                    return res.status(403).json({ message: 'Requete non autorisé !'}) 
+                }
                     newValues.usersDisliked.push(userId); //dans le cas enleve un like il push dans unlike
                     break;
                 case 0:  // CAS: Annulation du like/dislike
+                // si userlike  et user dislike (n'a pas fait d'action) n'inclue pas  userid authentifier alors tu n'est pas autoriser
+                    if (!newValues.usersLiked.includes(req.auth.userId) && !newValues.usersDisliked.includes(req.auth.userId) ) { 
+                        return res.status(403).json({ message: 'Requete non autorisé !'}) 
+                    }             
                     if (newValues.usersLiked.includes(userId)) { //include cherche dans un tableaux zero
                         // si on annule le like
                         const index = newValues.usersLiked.indexOf(userId); // renvoie le premier indice pour lequel on trouve un élément donné 
