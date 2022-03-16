@@ -63,7 +63,7 @@ exports.deleteSauce = (req, res, next) => {
             //split retourne un tableaux de que qu'il y a avant  /image , apres /image
             const filename = sauce.imageUrl.split('/images/')[1];//extraire le fichier , recup l'image url du produit retourner par la base,le2eme pour avoir le nom du fichier
             // package fs , unlike pour supprimer un fichier (1 arg(chemin fichier , 2 arg(callback apres supprimer)))
-            fs.unlink(`images/${filename}`, () => { //filename fait reference au dossier image
+            return fs.unlink(`images/${filename}`, () => { //filename fait reference au dossier image
                 //recuperer l'id des paramettre de route ,si oui on effectue la suppression
                 return Sauce.deleteOne({_id: req.params.id }) // egale (clée -> valeur) function pour supprimer un sauces (produit) dans la base de donnée    
                 .then(() => res.status(200).json({message: 'Objet supprimer !'})) // retourne la response 200 pour ok pour la methode http , renvoi objet modifier
