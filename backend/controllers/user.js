@@ -42,11 +42,11 @@ exports.login = (req, res, next) => {
             return res.status(401).json({ error: 'Mot de passe incorrect !' }); 
         } // sinon true on continue
         res.status(200).json({ // on verifie que la requete correspond a ce user_id
-            userId: user._id, //id de l'utilisateur das la base
+            userId: user._id, //id de l'utilisateur das la base (objet)
             // sign de jsonwebtoken pour encoder un nouveau token ;
             token: jwt.sign( //token crypter pour permettre la connection de l'utilisateur
             // cree un userid qui sera l'identifiant utilisateur du user
-            { userId : user._id },// payload les donnée que le veut encoder a l'interieure de ce token (cree un objet)
+            { userId : user._id },// payload les donnée que le veut encoder a l'interieure de ce token (cree un objet user id)
             process.env.SECRET_KEY,  // deuxieme argument clée secrete de l'encodage du .env qui est masqué
             { expiresIn: '24h'} //troisieme argument (de config) apliquer une expiration du token de 24h
             ) 
