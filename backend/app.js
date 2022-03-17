@@ -1,8 +1,11 @@
-//importation de l'application node-js
+//importation d'expresse (npm)
 const express =  require('express'); //aplication express require pour importer package express
 const mongoose = require('mongoose'); // importez mongoose dans votre fichier 
 const path = require('path'); // donne acces au chemin de notre gestion de fichier (systeme de fichier)
+const { xss } = require('express-xss-sanitizer'); //nettoie les données d'entrée de l'utilisateur (dans req.body, req.query, req.headers et req.params) 
 require('dotenv').config();// proteger les données .env 
+
+//importation de fichier
 const sauceRoutes = require('./routes/sauce'); //enregistrer notre nouveau routeur dans notre fichier app.js
 const userRoutes = require('./routes/user');  //enregistrer notre nouveau routeur dans notre fichier app.js
 //-----------------
@@ -30,22 +33,20 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS'); //autorise certaine methode requete
     next();
 });
-///---------acces au corp de la requete (body) et met a disposition dans le corp (acces) sur objet req  (body)
 
-
+// utilisation du module----------
+//acces au corp de la requete (body) et met a disposition dans le corp (acces) sur objet req (body)
 app.use(express.json());// intercepte toute les requetes qui on content type json (format) 
-
-// dire a expresse de servir ce dossier images
+app.use(xss());  //nettoie les données d'entrée de l'utilisateur
 // servir un dossier static avec cette methode , (ajouter .join) nom du dossier ou on se trouve et ajouter images
-
-// multer gerer les fichier (image)---------
-app.use('/images', express.static(path.join(__dirname, 'images')));
-//----
-
+app.use('/images', express.static(path.join(__dirname, 'images')));// multer gerer les fichier (image)--- , dire a expresse de servir ce dossier images
 // debut des Routes
-app.use('/api/auth', userRoutes); //route atendu par le front end
+app.use('/api/auth', userRoutes); //route attendu par le front end
 app.use('/api/sauces', sauceRoutes);// enregistrer notre routeur pour toutes les demandes effectuées vers /api/sauces
 //------------------
 
 // exporter cette application pour y avoir acces depuis les autre fichier (app.js) de notre projet notament le server node
 module.exports = app;
+
+
+
