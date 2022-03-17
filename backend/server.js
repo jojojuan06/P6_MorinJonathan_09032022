@@ -1,6 +1,6 @@
 //********importer package (http) de node , importer le contenue d'un module require************
-
-const http = require('http'); /* on a acces a l'objet http qui nous permet de crée un serveur , on get pour recuperer*/
+/* on a acces a l'objet http qui nous permet de crée un serveur , on get pour recuperer*/
+const http = require('http'); 
 //importer app.js
 const app = require('./app');
 
