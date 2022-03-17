@@ -1,15 +1,24 @@
 /// Controller utilisateur------------- (contenue route utilisateur  POST)
 
-//enregister user dans middleware ,importer dans le fichier
+//enregister user dans middleware , importer dans les fichier
 const User = require('../models/User');
+require('dotenv').config({ path:'../.env' });// proteger les donnée , adresse (path: chemin) du .env pour le process
+
+// importe package express (npm)
 const bcrypt = require('bcrypt'); //importer package de cryptage
 const jwt = require('jsonwebtoken'); //crée des token et les verifier
-require('dotenv').config({ path:'../.env' });// proteger les donnée , adresse (path: chemin) du .env pour le process
+const validator = require('validator'); //valide et nettoie uniquement les chaînes (validation de l'email)
+
 
 //function enregistrement de nouveaux utilisateur (Middleware d'authentification)
 
 //crypter le mdp , cree un new user avec hash +email et enregistrer user dans la bdd
-exports.signup = (req, res, next) => { //function pour crypter un mot de pass , on lui pass de mdp
+exports.signup = (req, res, next) => {
+    const email = req.body.email; // recupere l'email du corp de la requete
+    if (!validator.isEmail(email)) { //si se n'est pas un email valide (validator) on retourne l'erreur
+    return res.status(400).json({ error: `l'email ${email} n'est pas valider`})    
+    }
+    //function pour crypter un mot de pass , on lui pass de mdp
     bcrypt.hash(req.body.password, 10) // 10 tour pour verifier l'algoritme (methode asyncrone)
     .then(hash => { // recuper le hash(mdp crypter)  de mdp 
         //creation du new utilisateur
