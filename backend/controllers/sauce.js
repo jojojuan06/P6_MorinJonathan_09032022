@@ -15,7 +15,11 @@ exports.createSauce = (req, res, next) => {//exporter une function createSauce /
     const sauce = new Sauce({/* creation d'une nouvelle instance  de mon objet sauce (class) de le req*/  
     ...sauceObject,// operateur spread (...) vas copier les champ de l'objet , dans le corp de la request 
     //http ou https puis le host de notre server (localhost:3000), la racine du serveur
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`//adresse de l'image en interpolation  host(nom de domaine ou ad ip)
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,//adresse de l'image en interpolation  host(nom de domaine ou ad ip)
+    likes : 0,
+    dislikes : 0,
+    usersLiked : [],
+    usersDisliked : []
     });
     sauce.save()//methode save enregistre l'objet dans la base de donnée renvoi une promise
     .then(() => res.status(201).json({ message: 'Objet enregistré !'}))//retourne une promise asynchrone qui attend ,201 la requête a réussi avec le message
