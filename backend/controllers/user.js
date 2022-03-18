@@ -15,9 +15,15 @@ const validator = require('validator'); //valide et nettoie uniquement les chaî
 //crypter le mdp , cree un new user avec hash +email et enregistrer user dans la bdd
 exports.signup = (req, res, next) => {
     const email = req.body.email; // recupere l'email du corp de la requete
+    //verification de email
     if (!validator.isEmail(email)) { //si se n'est pas un email valide (validator) on retourne l'erreur
-    return res.status(400).json({ error: `l'email ${email} n'est pas valider`})    
+    return res.status(400).json({ error: `l'email ${email} n'est pas valide`})    
     }
+    //verification du mot de passe
+    const password = req.body.password;
+     if (!validator.isStrongPassword(password)) { //si se n'est pas un password valide (validator) on retourne l'erreur
+            return res.status(400).json({ error: `le password ${password} n'est pas valide`})    
+        }
     //function pour crypter un mot de pass , on lui pass de mdp
     bcrypt.hash(req.body.password, 10) // 10 tour pour verifier l'algoritme (methode asyncrone)
     .then(hash => { // recuper le hash(mdp crypter)  de mdp 
@@ -53,6 +59,7 @@ exports.login = (req, res, next) => {
         res.status(200).json({ // on verifie que la requete correspond a ce user_id
             userId: user._id, //id de l'utilisateur das la base (objet)
             // sign de jsonwebtoken pour encoder un nouveau token ;
+            //creation de token---------
             token: jwt.sign( //token crypter pour permettre la connection de l'utilisateur
             // cree un userid qui sera l'identifiant utilisateur du user
             { userId : user._id },// payload les donnée que le veut encoder a l'interieure de ce token (cree un objet user id)
