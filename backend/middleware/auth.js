@@ -6,7 +6,7 @@ require('dotenv').config({ path:'../.env' }); // proteger les donnée , adresse 
 
 //exportation d'un middleware
 module.exports = (req, res, next) => {
-    //permet de capturer plusieur erreur (verifie)
+    //permet de capturer plusieurs erreurs (verifie) 
     try {
     //split divise une chaîne de caractères en une liste ordonnée de sous-chaînes, place ces sous-chaînes dans un tableau et retourne le tableau.
     const token = req.headers.authorization.split(' ')[1];  //retourner un tableau bearer  1 element , token 2 element (que l'on recupere)

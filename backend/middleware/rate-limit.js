@@ -1,4 +1,4 @@
-// limite le nombre de requete utilisateur
+// limite le nombre de requete utilisateur (eviter les attaque de force brute)
 const  rateLimit  =  require( 'express-rate-limit' );
 
 
