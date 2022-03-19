@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];  //retourner un tableau bearer  1 element , token 2 element (que l'on recupere)
     //decoder le token
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY ); // function pour verifier le token et le token deja crée dans le  .env
-    //il fois decoder il devient un objet classique pour le recuperer
+    //une fois decoder il devient un objet classique pour le recuperer
     const userId = decodedToken.userId; // recuperer le userid qui est a l'interieure
     //attribuer userid a la requete , objet auth a la req
     req.auth = { userId } ; //racourcie pour attribuer un valeur a une clée du mm nom d'un objet,extensible , ajouter des element a l'avenir
