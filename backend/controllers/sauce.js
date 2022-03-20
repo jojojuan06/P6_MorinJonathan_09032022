@@ -6,8 +6,8 @@ const fs = require('fs');
 
 //---------controller------------- (contenue des routes)
 
-// POST-----
-exports.createSauce = (req, res, next) => {//exporter une function createSauce / contenue de la route post / creation dun post
+// POST-----(Creation d'une sauce) 
+exports.createSauce = (req, res, next) => {
     //Le corps de la requête contient une chaîne donc on doit le parse
     const sauceObject = JSON.parse(req.body.sauce);//extraire l'objet json
     //body correspond au model de l'objet que l'on envoi
