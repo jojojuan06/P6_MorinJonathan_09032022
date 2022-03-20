@@ -23,7 +23,7 @@ exports.createSauce = (req, res, next) => {//exporter une function createSauce /
     });
     sauce.save()//methode save enregistre l'objet dans la base de donnée renvoi une promise
     .then(() => res.status(201).json({ message: 'Objet enregistré !'}))//retourne une promise asynchrone qui attend ,201 la requête a réussi avec le message
-    .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` }));// capture l'erreur et renvoi un message erreur (egale error: error)
+    .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` }));
 };
 //---------
 
@@ -41,7 +41,7 @@ exports.modifySauce = (req, res, next) => {//exporter une function createsauce /
         { ...sauceObject, _id: req.params.id })//pour correspondre a l'id des param de la req et dire que l'id corespond a celui des paramettre
     //spread pour recuperer le sauce (produit) qui est dans le corp de la requete que l'on a cree et on modifier sont identifiant
         .then(() => res.status(200).json({ message: 'Objet modifié !'}))// retourne la response 200 pour ok pour la methode http , renvoi objet modifier
-        .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` }));// capture l'erreur et renvoi un message erreur (egale error: error)
+        .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` }));
 };
 
 //---------------
@@ -105,51 +105,51 @@ exports.likeSauce = (req, res, next) => {
     const like = req.body.like; // chercher like dans le corp de la requete
     const sauceId = req.params.id;// chercher id de la sauce dans le corp de la requete
     Sauce.findOne({ _id: sauceId })
-        .then(sauce => {
-            // nouvelles valeurs à modifier
-            const newValues = {
-                usersLiked: sauce.usersLiked,
-                usersDisliked: sauce.usersDisliked,
-                likes: 0, // mais zero par default
-                dislikes: 0 // mais zero par default
+    .then(sauce => {
+        // nouvelles valeurs à modifier
+        const newValues = {
+            usersLiked: sauce.usersLiked,
+            usersDisliked: sauce.usersDisliked,
+            likes: 0, // mais zero par default
+            dislikes: 0 // mais zero par default
+        }
+        // Différents cas:
+        switch (like) {
+            case 1:  // CAS: sauce liked
+            if (newValues.usersLiked.includes(req.auth.userId) ) { //si userlikes inclus user id descrypter avec le token alors on eux peu pas fait d'action (et pas deja like)
+                return res.status(403).json({ message: 'Requete non autorisé !'}) //indique qu'un serveur comprend la requête mais refuse de l'autoriser.
             }
-            // Différents cas:
-            switch (like) {
-                case 1:  // CAS: sauce liked
-                if (newValues.usersLiked.includes(req.auth.userId) ) { //si userlikes inclus user id descrypter avec le token alors on eux peu pas fait d'action (et pas deja like)
-                    return res.status(403).json({ message: 'Requete non autorisé !'}) //indique qu'un serveur comprend la requête mais refuse de l'autoriser.
-                }
-                    newValues.usersLiked.push(userId);  //dans le cas ajouter un like
-                    break;
-                case -1:  // CAS: sauce disliked
-                if (newValues.usersDisliked.includes(req.auth.userId) ) { // si userdislike  inclue userid authentifier
+                newValues.usersLiked.push(userId);  //dans le cas ajouter un like
+                break;
+            case -1:  // CAS: sauce disliked
+            if (newValues.usersDisliked.includes(req.auth.userId) ) { // si userdislike  inclue userid authentifier
+                return res.status(403).json({ message: 'Requete non autorisé !'}) 
+            }
+                newValues.usersDisliked.push(userId); //dans le cas enleve un like il push dans unlike
+                break;
+            case 0:  // CAS: Annulation du like/dislike
+            // si userlike  et user dislike (n'a pas fait d'action) n'inclue pas  userid authentifier alors tu n'est pas autoriser
+                if (!newValues.usersLiked.includes(req.auth.userId) && !newValues.usersDisliked.includes(req.auth.userId) ) { 
                     return res.status(403).json({ message: 'Requete non autorisé !'}) 
+                }             
+                if (newValues.usersLiked.includes(userId)) { //include cherche dans un tableaux zero
+                    // si on annule le like
+                    const index = newValues.usersLiked.indexOf(userId); // renvoie le premier indice pour lequel on trouve un élément donné 
+                    newValues.usersLiked.splice(index, 1); //modifie le contenu d'un tableau en retirant des éléments et/ou en ajoutant 
+                } else {
+                    // si on annule le dislike
+                    const index = newValues.usersDisliked.indexOf(userId);// renvoie le premier indice pour lequel on trouve un élément donné 
+                    newValues.usersDisliked.splice(index, 1); //splice modifie le contenu d'un tableau 
                 }
-                    newValues.usersDisliked.push(userId); //dans le cas enleve un like il push dans unlike
-                    break;
-                case 0:  // CAS: Annulation du like/dislike
-                // si userlike  et user dislike (n'a pas fait d'action) n'inclue pas  userid authentifier alors tu n'est pas autoriser
-                    if (!newValues.usersLiked.includes(req.auth.userId) && !newValues.usersDisliked.includes(req.auth.userId) ) { 
-                        return res.status(403).json({ message: 'Requete non autorisé !'}) 
-                    }             
-                    if (newValues.usersLiked.includes(userId)) { //include cherche dans un tableaux zero
-                        // si on annule le like
-                        const index = newValues.usersLiked.indexOf(userId); // renvoie le premier indice pour lequel on trouve un élément donné 
-                        newValues.usersLiked.splice(index, 1); //modifie le contenu d'un tableau en retirant des éléments et/ou en ajoutant 
-                    } else {
-                        // si on annule le dislike
-                        const index = newValues.usersDisliked.indexOf(userId);// renvoie le premier indice pour lequel on trouve un élément donné 
-                        newValues.usersDisliked.splice(index, 1); //splice modifie le contenu d'un tableau 
-                    }
-                    break;
-            };
-            // Calcul du nombre de likes / dislikes
-            newValues.likes = newValues.usersLiked.length;
-            newValues.dislikes = newValues.usersDisliked.length;
-            // Mise à jour de la sauce avec les nouvelles valeurs
-            Sauce.updateOne({ _id: sauceId }, newValues )
-                .then(() => res.status(200).json({ message: 'Sauce notée !' }))
-                .catch(error => res.status(400).json({ error }))  
-        })
-        .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` }));
+                break;
+        };
+        // Calcul du nombre de likes / dislikes
+        newValues.likes = newValues.usersLiked.length;
+        newValues.dislikes = newValues.usersDisliked.length;
+        // Mise à jour de la sauce avec les nouvelles valeurs
+        Sauce.updateOne({ _id: sauceId }, newValues )
+            .then(() => res.status(200).json({ message: 'Sauce notée !' }))
+            .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` })); //erreur server 
+    })
+    .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` }));
 }   
