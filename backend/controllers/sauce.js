@@ -13,7 +13,7 @@ const validator = require('validator');
 exports.createSauce = (req, res, next) => {
     //Le corps de la requête contient une chaîne donc on doit le parse
     const sauceObject = JSON.parse(req.body.sauce);//extraire l'objet json
-    //verifier si les champs sont vides 
+    //verifier si les champs sont vides (ex name ou description ect..)
     if (validator.isEmpty(`${sauceObject.name}`) ||
         validator.isEmpty(`${sauceObject.manufacturer}`) ||
         validator.isEmpty(`${sauceObject.description}`) ||
