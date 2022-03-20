@@ -4,12 +4,22 @@ const Sauce = require('../models/Sauce');
 //importer acces au systeme de fichier cree (file systeme)
 const fs = require('fs');
 
+//valide et nettoie uniquement les chaînes (validation de l'email)
+const validator = require('validator'); 
+
 //---------controller------------- (contenue des routes)
 
 // POST-----(Creation d'une sauce) 
 exports.createSauce = (req, res, next) => {
     //Le corps de la requête contient une chaîne donc on doit le parse
     const sauceObject = JSON.parse(req.body.sauce);//extraire l'objet json
+    //verifier si les champs sont vides 
+    if (validator.isEmpty(`${sauceObject.name}`) ||
+        validator.isEmpty(`${sauceObject.manufacturer}`) ||
+        validator.isEmpty(`${sauceObject.description}`) ||
+        validator.isEmpty(`${sauceObject.mainPepper}`)){
+        return res.status(400).json({ error: `les champs ne doivent pas être vide`})    
+    }
     //body correspond au model de l'objet que l'on envoi
     delete sauceObject._id;// enlever le champ id (envoyé par le front-end) du corp de la requete (methode delete) car mongoos le genere automatiquement
     const sauce = new Sauce({/* creation d'une nouvelle instance  de mon objet sauce (class) de le req*/  
