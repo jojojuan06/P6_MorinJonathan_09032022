@@ -9,9 +9,9 @@ const { xss } = require('express-xss-sanitizer');
 // proteger les données .env   
 require('dotenv').config();
 
-//importation de fichier
-const sauceRoutes = require('./routes/sauce'); //enregistrer notre nouveau routeur dans notre fichier app.js
-const userRoutes = require('./routes/user');  //enregistrer notre nouveau routeur dans notre fichier app.js
+//importation de fichier (enregistrer notre nouveau routeur dans notre fichier app.js)
+const sauceRoutes = require('./routes/sauce'); 
+const userRoutes = require('./routes/user');  
 //-----------------
 
 // appelle de la methode express (une function) permet de crée une application expresse
@@ -47,9 +47,9 @@ app.use(xss());  //nettoie les données d'entrée de l'utilisateur
 //Gestion des routes principales
 // servir un dossier static avec cette methode , (ajouter .join) nom du dossier ou on se trouve et ajouter images
 app.use('/images', express.static(path.join(__dirname, 'images')));// multer gerer les fichier (image)--- , dire a expresse de servir ce dossier images
-// debut des Routes
-app.use('/api/auth', userRoutes); //route attendu par le front end
-app.use('/api/sauces', sauceRoutes);// enregistrer notre routeur pour toutes les demandes effectuées vers /api/sauces
+// debut des Routes (enregistrer notre routeur pour toutes les demandes effectuées vers /api/sauces)
+app.use('/api/auth', userRoutes); 
+app.use('/api/sauces', sauceRoutes);
 //------------------
 
 // exporter cette application pour y avoir acces depuis les autre fichier (app.js) de notre projet notament le server node
