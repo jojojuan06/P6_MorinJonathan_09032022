@@ -79,7 +79,7 @@ exports.deleteSauce = (req, res, next) => {
 //---------------
 
 
-// GET (recuperation / recuperer le/les l'objet) -----
+// GET (recuperer le/les sauce(s)) -----
 
 // recuperer  un objet
 exports.getOneSauce = (req, res, next) => { 
