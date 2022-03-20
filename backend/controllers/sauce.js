@@ -27,8 +27,7 @@ exports.createSauce = (req, res, next) => {
 };
 //---------
 
-// PUT (modifier / mise a jour de l'objet) -----
-
+// PUT (modifier une sauce) -----
 exports.modifySauce = (req, res, next) => {//exporter une function createsauce / contenue de la route post / creation dun post
     //test le cas de figure ou on se trouve
     const sauceObject = req.file ?//si req.file exist (ternaire)
@@ -46,7 +45,7 @@ exports.modifySauce = (req, res, next) => {//exporter une function createsauce /
 
 //---------------
 
-// DELETE (supprimer / suppression de l'objet) -----
+// DELETE (supprimer une sauce) -----
 
 exports.deleteSauce = (req, res, next) => {
     // allez le chercher et avoir l'url de l'image pour la supprimer (cherche le produit)
