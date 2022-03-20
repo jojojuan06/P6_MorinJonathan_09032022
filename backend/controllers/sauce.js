@@ -18,7 +18,7 @@ exports.createSauce = (req, res, next) => {
         validator.isEmpty(`${sauceObject.manufacturer}`) ||
         validator.isEmpty(`${sauceObject.description}`) ||
         validator.isEmpty(`${sauceObject.mainPepper}`)){
-        return res.status(400).json({ error: `les champs ne doivent pas être vide`})    
+        return res.status(400).json({ message: `les champs ne doivent pas être vide`})    
     }
     //body correspond au model de l'objet que l'on envoi
     delete sauceObject._id;// enlever le champ id (envoyé par le front-end) du corp de la requete (methode delete) car mongoos le genere automatiquement
