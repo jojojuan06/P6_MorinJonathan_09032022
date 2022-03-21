@@ -1,5 +1,3 @@
-// faciliser les tache ecriture lecture de mongo DB
-
 // importez mongoose dans votre fichier 
 const mongoose = require('mongoose');
 //package de validation pour prévalider les informations avant de les enregistrer
