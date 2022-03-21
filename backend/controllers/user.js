@@ -1,6 +1,6 @@
 /// Controller utilisateur------------- (contenue route utilisateur  POST)
 
-//enregister user dans middleware , importer dans les fichier
+//importer des fichier
 const User = require('../models/User');
 require('dotenv').config({ path:'../.env' });// proteger les donnée , adresse (path: chemin) du .env pour le process
 
