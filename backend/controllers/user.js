@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken'); //crée des token et les verifier
 const validator = require('validator'); //valide et nettoie uniquement les chaînes (validation de l'email)
 
 
-//function enregistrement de nouveaux utilisateur (Middleware d'authentification)
+//enregistrement de nouveaux utilisateur 
 
 //crypter le mdp , cree un new user avec hash +email et enregistrer user dans la bdd
 exports.signup = (req, res, next) => {
@@ -40,8 +40,7 @@ exports.signup = (req, res, next) => {
 };  
 
 
-//function login pour connecter de nouveaux utilisateur existant
-
+//connecter un utilisateur existant
 exports.login = (req, res, next) => {
     //trouver un seul utilisateur de la BD grace a (unique)    
     User.findOne({ email: req.body.email }) //on veut que email correspond a la req
