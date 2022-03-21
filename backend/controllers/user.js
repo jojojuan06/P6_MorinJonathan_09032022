@@ -24,7 +24,7 @@ exports.signup = (req, res, next) => {
      if (!validator.isStrongPassword(password)) { //si se n'est pas un password valide (validator) on retourne l'erreur
             return res.status(400).json({ error: `le password ${password} n'est pas valide`})    
         }
-    //function pour crypter un mot de pass , on lui pass de mdp
+    //cryptage un mot de pass , on lui pass de mdp
     bcrypt.hash(req.body.password, 10) // 10 tour pour verifier l'algoritme (methode asyncrone)
     .then(hash => { // recuper le hash(mdp crypter)  de mdp 
         //creation du new utilisateur
