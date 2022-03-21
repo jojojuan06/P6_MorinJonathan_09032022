@@ -10,7 +10,7 @@ const validator = require('validator');
 //---------controller------------- (contenue des routes)
 
 // POST-----(Creation d'une sauce) 
-exports.createSauce = (req, res, next) => {
+exports.createSauce = (req, res, next) => { //function de callback
     //Le corps de la requête contient une chaîne donc on doit le parse
     const sauceObject = JSON.parse(req.body.sauce);//extraire l'objet json
     //verifier si les champs sont vides (avant submit ,ex name ou description ect..)
