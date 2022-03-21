@@ -1,4 +1,4 @@
-// importez mongoose dans votre fichier 
+// importez mongoose dans votre fichier (pour utiliser des schema)
 const mongoose = require('mongoose');
 
 
