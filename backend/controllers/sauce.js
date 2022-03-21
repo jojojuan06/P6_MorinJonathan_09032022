@@ -1,7 +1,7 @@
 //importer de model sauce crée , pouvoir utiliser notre nouveau modèle Mongoose dans l'application, nous devons l'importer dans le fichier
 const Sauce = require('../models/Sauce');
 
-//importer acces au systeme de fichier cree (file systeme)
+//importer acces au systeme de fichier  (action sur une fichier ou dossier)
 const fs = require('fs');
 
 //valide et nettoie uniquement les chaînes (validation de l'email)
