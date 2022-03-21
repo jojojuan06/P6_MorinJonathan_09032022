@@ -69,7 +69,7 @@ exports.login = (req, res, next) => {
     }) 
     .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` }));   
     })
-    .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` })); //erreur serveur (problem conexion mongo db)
+    .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` })); 
 };
 
 //----------------
