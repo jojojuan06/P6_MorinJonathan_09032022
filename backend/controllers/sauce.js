@@ -158,7 +158,7 @@ exports.likeSauce = (req, res, next) => {
         // Mise à jour de la sauce avec les nouvelles valeurs
         Sauce.updateOne({ _id: sauceId }, newValues )
             .then(() => res.status(200).json({ message: 'Sauce notée !' }))
-            .catch(error => res.status(400).json({ message: `nous faisons face a cette: ${error}` })); //erreur server 
+            .catch(error => res.status(400).json({ message: `nous faisons face a cette: ${error}` })); 
     })
     .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` }));
 }   
