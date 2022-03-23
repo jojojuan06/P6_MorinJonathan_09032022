@@ -67,3 +67,4 @@ server.on('listening', () => {  //evenement dire serveur demarer , ecouter port 
 });
 
 server.listen(port);
+// vas ecouter le port
