@@ -45,29 +45,29 @@ exports.login = (req, res, next) => {
     //trouver un seul utilisateur de la BD grace a (unique)    
     User.findOne({ email: req.body.email }) //on veut que email correspond a la req
     .then(user => {
-    //si user (!user) n'est pas trouver  on renvoi le return message d'error
-    if (!user) {
-        return res.status(401).json({ error: 'Utilisateur non trouvé !' });
-    } //sinon l'user a etait trouver et on compare le mdp crypte de l'utilisateur qui se connect
-    bcrypt.compare(req.body.password, user.password) // function pour comparer les mdp hash (crypter) envoyer par la req (objet body envoyer)
-    // et le hash deja enregistrer
-    .then(valid => {  //recoi un boolean (true false comparaison valid ou non)
-        if (!valid) { //false mauvais mdp
-            return res.status(401).json({ error: 'Mot de passe incorrect !' }); 
-        } // sinon true on continue
-        res.status(200).json({ // on verifie que la requete correspond a ce user_id
-            userId: user._id, //id de l'utilisateur das la base (objet)
-            // sign de jsonwebtoken pour encoder un nouveau token ;
-            //creation de token---------
-            token: jwt.sign( //token crypter pour permettre la connection de l'utilisateur
-            // cree un userid qui sera l'identifiant utilisateur du user
-            { userId : user._id },// payload les donnée que le veut encoder a l'interieure de ce token (cree un objet user id)
-            process.env.SECRET_KEY,  // deuxieme argument clée secrete de l'encodage du .env qui est masqué
-            { expiresIn: '24h'} //troisieme argument (de config) apliquer une expiration du token de 24h
-            )  
-        });
-    }) 
-    .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` }));   
+        //si user (!user) n'est pas trouver  on renvoi le return message d'error
+        if (!user) {
+            return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+        } //sinon l'user a etait trouver et on compare le mdp crypte de l'utilisateur qui se connect
+        bcrypt.compare(req.body.password, user.password) // function pour comparer les mdp hash (crypter) envoyer par la req (objet body envoyer)
+        // et le hash deja enregistrer
+        .then(valid => {  //recoi un boolean (true false comparaison valid ou non)
+            if (!valid) { //false mauvais mdp
+                return res.status(401).json({ error: 'Mot de passe incorrect !' }); 
+            } // sinon true on continue
+            res.status(200).json({ // on verifie que la requete correspond a ce user_id
+                userId: user._id, //id de l'utilisateur das la base (objet)
+                // sign de jsonwebtoken pour encoder un nouveau token ;
+                //creation de token---------
+                token: jwt.sign( //token crypter pour permettre la connection de l'utilisateur
+                // cree un userid qui sera l'identifiant utilisateur du user
+                { userId : user._id },// payload les donnée que le veut encoder a l'interieure de ce token (cree un objet user id)
+                process.env.SECRET_KEY,  // deuxieme argument clée secrete de l'encodage du .env qui est masqué
+                { expiresIn: '24h'} //troisieme argument (de config) apliquer une expiration du token de 24h
+                )  
+            });
+        }) 
+        .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` }));   
     })
     .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` })); 
 };
