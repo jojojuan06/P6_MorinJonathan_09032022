@@ -62,10 +62,8 @@ exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
     //trouver id a celui qui est dans les parametres de la req ,recupere un sauce (produit) dans le callback (function de rapelle)
     .then((sauce) => {// recupere le sauce dans la base
-            if (!sauce) {  // si la sauce n'existe pas on retourne l'erreur
-                return res.status(404).json({
-                    error: new Error('Objet non trouvé')
-                });
+            if (!sauce) { // si la sauce n'existe pas
+                return res.status(404).json({ message: "La sauce n'existe pas !"})
             }
             // verifier que seulement la personne qui detient l'objet peu le supprimer
             if (sauce.userId !== req.auth.userId) { //different de req.auth
@@ -102,7 +100,7 @@ exports.getOneSauce = (req, res, next) => {
 // recuperer  les objet
 exports.getAllSauce = (req, res, next) => {    
     //création des objet-----------
-    Sauce.find() //trouve la liste d'objet (find) qui nous retourne une promise , envoi un tableau contenant tous les sauces dans notre base de données
+        Sauce.find() //trouve la liste d'objet (find) qui nous retourne une promise , envoi un tableau contenant tous les sauces dans notre base de données
         .then(sauces => res.status(200).json(sauces)) // retourne la response 200 pour ok pour la methode http , revoi le tableaux des sauces recu
         .catch(error => res.status(400).json({ message: `nous faisons face a cette: ${error}` })); 
     }
@@ -115,6 +113,9 @@ exports.likeSauce = (req, res, next) => {
     const sauceId = req.params.id;// chercher id de la sauce dans le corp de la requete
     Sauce.findOne({ _id: sauceId })
     .then(sauce => {
+        if (!sauce) { // si la sauce n'existe pas
+            return res.status(404).json({ message: "La sauce n'existe pas !"})
+        }
         // nouvelles valeurs à modifier
         const newValues = {
             usersLiked: sauce.usersLiked,
@@ -160,5 +161,5 @@ exports.likeSauce = (req, res, next) => {
             .then(() => res.status(200).json({ message: 'Sauce notée !' }))
             .catch(error => res.status(400).json({ message: `nous faisons face a cette: ${error}` })); 
     })
-    .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` }));
+    .catch(error => res.status(500).json({ message: `nous faisons face a cette: ${error}` })); 
 }   
