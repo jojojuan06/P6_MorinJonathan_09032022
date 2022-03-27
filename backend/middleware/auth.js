@@ -21,7 +21,7 @@ module.exports = (req, res, next) => {
     if (req.body.userId && req.body.userId !== userId)  {
         throw 'User iD non valable !'; //pour renvoyer l'erreur
     } else { //si tout vas bien
-        next(); // on pass la req au middleware suivant
+        next(); // on pass la req au middleware suivant (si auth est correct, pass au mid suivant ex multer)
     }
     } catch (error) {
         res.status(401).json({ error: error | 'Requete non authentifiée !' })  // '|' signifier ou (sinon) sur un autre erreur le msg
