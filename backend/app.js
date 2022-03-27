@@ -49,7 +49,7 @@ app.use(xss());  //nettoie les données d'entrée de l'utilisateur
 app.use('/images', express.static(path.join(__dirname, 'images')));// multer gerer les fichier (image)--- , dire a expresse de servir ce dossier images
 // debut des Routes (enregistrer notre routeur pour toutes les demandes effectuées vers /api/sauces)
 app.use('/api/auth', userRoutes); 
-app.use('/api/sauces', sauceRoutes);
+app.use('/api/sauces', sauceRoutes); // importer et appliquer a la meme route (contient la logique des routes)
 //------------------
 
 // exporter cette application pour y avoir acces depuis les autre fichier (app.js) de notre projet notament le server node

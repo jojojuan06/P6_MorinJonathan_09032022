@@ -18,7 +18,7 @@ const limiter = {
     }),
     auth: rateLimit({
          windowMs: 10 * 60 * 1000, // 10 minutes
-         max: 10, // Limitez chaque IP à 5 requêtes par `window` (ici, par 10 minutes)
+         max: 10, // Limitez chaque IP à 10 requêtes par `window` (ici, par 10 minutes)
         standardHeaders: true,
         legacyHeaders: false,
     })

@@ -12,15 +12,15 @@ const validator = require('validator');
 // POST-----(Creation d'une sauce) 
 exports.createSauce = (req, res, next) => { //function de callback
     //Le corps de la requête contient une chaîne donc on doit le parse
-    const sauceObject = JSON.parse(req.body.sauce);//extraire l'objet json
-    //verifier si les champs sont vides (avant submit ,ex name ou description ect..)
-    if (validator.isEmpty(`${sauceObject.name}`) ||
+    const sauceObject = JSON.parse(req.body.sauce);//extraire l'objet json (l'objet sauce de la requête)
+    //verifier si les champs sont vides (avant submit ,ex name ou description ect..(le front-end n'est pas fiable))
+    if (validator.isEmpty(`${sauceObject.name}`) || 
         validator.isEmpty(`${sauceObject.manufacturer}`) ||
         validator.isEmpty(`${sauceObject.description}`) ||
         validator.isEmpty(`${sauceObject.mainPepper}`)){
         return res.status(400).json({ message: `les champs ne doivent pas être vide`})    
     }
-    //body correspond au model de l'objet que l'on envoi
+    //body correspond au model de l'objet que l'on envoi (on eleve id l'objet sauce de la requête)
     delete sauceObject._id;// enlever le champ id (envoyé par le front-end) du corp de la requete (methode delete) car mongoos le genere automatiquement
     const sauce = new Sauce({/* creation d'une nouvelle instance  de mon objet sauce (class) de le req*/  
     ...sauceObject,// operateur spread (...) vas copier les champ de l'objet , dans le corp de la request 
