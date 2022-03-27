@@ -47,7 +47,7 @@ exports.modifySauce = (req, res, next) => {//exporter une function createsauce /
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`//adresse de l'image en interpolation 
         } : { ...req.body };//sinon il n'exite pas on copie l'objet (corp de la requete)
     Sauce.updateOne({ _id: req.params.id }, // egale (clée -> valeur) function pour modifier un sauces (produit) dans la base de donnée
-        { ...sauceObject, _id: req.params.id })//pour correspondre a l'id des param de la req et dire que l'id corespond a celui des paramettre
+        { ...sauceObject, _id: req.params.id })//pour correspondre a l'id des param de la req et dire que l'id corespond a celui des paramettre (mettre a jour son produit)
     //spread pour recuperer le sauce (produit) qui est dans le corp de la requete que l'on a cree et on modifier sont identifiant
         .then(() => res.status(200).json({ message: 'Objet modifié !'}))// retourne la response 200 pour ok pour la methode http , renvoi objet modifier
         .catch(error => res.status(400).json({ message: `nous faisons face a cette: ${error}` }));

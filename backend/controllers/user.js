@@ -49,10 +49,10 @@ exports.login = (req, res, next) => {
         if (!user) {
             return res.status(401).json({ error: 'Utilisateur non trouvé !' });
         } //sinon l'user a etait trouver et on compare le mdp crypte de l'utilisateur qui se connect
-        bcrypt.compare(req.body.password, user.password) // function pour comparer les mdp hash (crypter) envoyer par la req (objet body envoyer)
-        // et le hash deja enregistrer
-        .then(valid => {  //recoi un boolean (true false comparaison valid ou non)
-            if (!valid) { //false mauvais mdp
+        bcrypt.compare(req.body.password, user.password) // function pour comparer les mdp hash (crypter) envoyer par la req ,
+        // et le hash deja enregistrer (le hash du user)
+        .then(valid => {  //recoit un boolean (true false comparaison valid ou non)
+            if (!valid) { //false mauvais utilisateur mdp
                 return res.status(401).json({ error: 'Mot de passe incorrect !' }); 
             } // sinon true on continue
             res.status(200).json({ // on verifie que la requete correspond a ce user_id
